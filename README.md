@@ -13,6 +13,8 @@ Park functions: name(),  act(), area(), link(), nearby()
 
 Trails functions: name(),  len(), nearby()
 
+# Example:
+Atlanta, GA nearby(5) #park
 
 ## nearby() aka nearbys()
 ### finds nearby parks/trails with a given location
@@ -68,6 +70,3 @@ link(map)
 link(cal)
 link(permit)
 link(conditions)
-
-# Example:
-Atlanta, GA nearby(5) #park
