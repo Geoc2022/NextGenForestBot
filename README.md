@@ -10,8 +10,8 @@ Park functions: name(),  act(), area(), link(), nearby()
 Trails functions: name(),  len(), nearby()
 
 
-# nearby() aka nearbys()
-## finds nearby parks/trails with a given location
+## nearby() aka nearbys()
+### finds nearby parks/trails with a given location
 
 for parks:
 nearbyparks(5)
