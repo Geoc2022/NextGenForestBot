@@ -27,19 +27,19 @@ nearbys(5) #trails
 
 (- numbers give the reverse)
 
-# name() aka title()
-## finds parks/trails with the same name
+## name() aka title()
+### finds parks/trails with the same name
 
 name(abc): abc, abcd, or aabc
 name(^a): all trails/parks which start with ‘a’ (uses regex: http://regexr.com)
 
-# act() aka activity()
-## finds parks which have the activities listed
+## act() aka activity()
+### finds parks which have the activities listed
 
 act(swim, bike): all parks which have swimming or biking
 
-# area() aka size()
-## finds parks which have the size specified (km2)
+## area() aka size()
+### finds parks which have the size specified (km2)
 
 area(5): parks 5km2
 area(5-10): parks 5km2 - 10km2
@@ -47,8 +47,8 @@ area(>5) or area(5<): parks >5km2
 area(<5) or area(5>): parks <5km2
 (specify other units using: acres, mi2, y2, hectare (ha))
 
-# len() aka length()
-## finds trails which have the length (km) specified
+## len() aka length()
+### finds trails which have the length (km) specified
 
 len(5): parks 5km
 len(5-10): parks 5km - 10km
@@ -56,8 +56,8 @@ len(>5) or area(5<): parks >5km
 len(<5) or area(5>): parks <5km
 (specify other units using: mi (kilometer), y (yard), f (feet))
 
-# link()
-## get links to common resources
+## link()
+### get links to common resources
 
 link(info)
 link(map)
