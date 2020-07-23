@@ -4,9 +4,13 @@ This is the code for the NextGenForestBot on twitter (https://twitter.com/NextGe
 Keys have been removed.
 
 # How to use the bot: @NextGenForestB1
+
 Bot which helps find parks/trails:
+
 @ bot and use the functions bellow
+
 Park functions: name(),  act(), area(), link(), nearby()
+
 Trails functions: name(),  len(), nearby()
 
 
