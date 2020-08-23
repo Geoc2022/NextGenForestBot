@@ -530,7 +530,3 @@ while True:
     reply_to_tweets()
 #    sleep_load(15)
     testing(1)
-    
-
-
-
