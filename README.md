@@ -38,15 +38,25 @@ nearbys(5) #trails
 ### Adds detailed weather
 
 #### weather(0)
+
 {placetitle} - {Status} {Emoji}  ({Details})
+
 Temperature: {Temperature temp}
+
     max: {Temperature temp_max}
+
     min: {Temperature temp_min}
+
     feels like: {Temperature feels_like}
+
 Wind: {Wind[0]}, {Wind[1]}
+
 UV Exposure: {(UV Exposure).title()}
 
+
+
 #### weather(1)
+
 {placetitle} - {Status} {Emoji}  ({Details})
 
 ## name() aka title()
