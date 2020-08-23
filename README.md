@@ -9,9 +9,9 @@ Bot which helps find parks/trails:
 
 @ bot and use the functions bellow
 
-Park functions: name(),  act(), area(), link(), nearby()
+Park functions: name(), act(), area(), link(), nearby(), weather()
 
-Trails functions: name(),  len(), nearby()
+Trails functions: name(), len(), nearby(), weather()
 
 # Example:
 @NextGenForestB1
@@ -33,6 +33,21 @@ nearby(5) #trails
 nearbys(5) #trails
 
 (- numbers give the reverse)
+
+## weather()
+### Adds detailed weather
+
+#### weather(0)
+{placetitle} - {Status} {Emoji}  ({Details})
+Temperature: {Temperature temp}
+    max: {Temperature temp_max}
+    min: {Temperature temp_min}
+    feels like: {Temperature feels_like}
+Wind: {Wind[0]}, {Wind[1]}
+UV Exposure: {(UV Exposure).title()}
+
+#### weather(1)
+{placetitle} - {Status} {Emoji}  ({Details})
 
 ## name() aka title()
 ### finds parks/trails with the same name
