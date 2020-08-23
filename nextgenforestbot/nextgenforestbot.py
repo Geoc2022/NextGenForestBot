@@ -15,7 +15,7 @@ from keys import *
 # More info: https://help.pythonanywhere.com/pages/AlwaysOnTasks/
 
 # = setup =
-print('Running...', flush=True)
+print('Running...')
 
 CONSUMER_KEY = ''
 CONSUMER_SECRET = ''
@@ -26,7 +26,7 @@ auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
-mapbox_key = ''
+mapbox_key = 'pk.eyJ1IjoiZ2VvY2giLCJhIjoiY2tjZ3M5OTh6MDJlbjJxbWhwZHI1MXVoaiJ9.qpy6TD5rCJovweLIeE7DbA'
 
 FILE_NAME = 'last_seen_id.txt'
 
@@ -107,9 +107,9 @@ def search_location(text_to_search):
     match_list = [coord.split(', ') for coord in match_text]
     match_list = [[float(coord[0]), float(coord[1])] for coord in match_list]
     
-    return match_list
+    match_list.append([0,0])
     
-#print(search_location(input('input: ')))
+    return match_list
     
 # Search Activity/Area/Length/Date/tbm/link/nearby
 def search_fun(text_to_search):
@@ -312,7 +312,6 @@ def check_fun_csv(search_input, t_p):
         elif ((search_type == 'nearbyparks') or (search_type == 'nearbypark') or (search_type == 'nearby')) and search_terms:
             dist_user_parktrail_dict = {}
             for title, values in search_results.items():
-#                user_location = [34, -84]
                 dist_user_parktrail_dict.update({title: dist_coord(user_location, values[2])})
                 sort_dist_list = sorted(dist_user_parktrail_dict, key=dist_user_parktrail_dict.__getitem__)
             if int(search_terms[0]) > 0:
@@ -346,15 +345,15 @@ def check_fun_csv(search_input, t_p):
     
 
 #Print Weather
-def print_weather(weather_stored_dict, items):
+def print_weather(placetitle, weather_stored_dict, items):
     weather_text_list = [
-    f"- {weather_stored_dict['Status']} {weather_stored_dict['Emoji']}  ({weather_stored_dict['Details']})\nTemperature: {weather_stored_dict['Temperature']['temp']}\n    max: {weather_stored_dict['Temperature']['temp_max']}\n    min: {weather_stored_dict['Temperature']['temp_min']}\n    feels like: {weather_stored_dict['Temperature']['feels_like']}\nWind: {weather_stored_dict['Wind'][0]}, {weather_stored_dict['Wind'][1]}\nUV Exposure: {(weather_stored_dict['UV Exposure']).title()}",
-    f"- {weather_stored_dict['Status']} {weather_stored_dict['Emoji']}  ({weather_stored_dict['Details']})"]
+    f"\n{placetitle} - {weather_stored_dict['Status']} {weather_stored_dict['Emoji']}  ({weather_stored_dict['Details']})\nTemperature: {weather_stored_dict['Temperature']['temp']}\n    max: {weather_stored_dict['Temperature']['temp_max']}\n    min: {weather_stored_dict['Temperature']['temp_min']}\n    feels like: {weather_stored_dict['Temperature']['feels_like']}\nWind: {weather_stored_dict['Wind'][0]}, {weather_stored_dict['Wind'][1]}\nUV Exposure: {(weather_stored_dict['UV Exposure']).title()}",
+    f"\n{placetitle} - {weather_stored_dict['Status']} {weather_stored_dict['Emoji']}  ({weather_stored_dict['Details']})"]
 
     try:
-        return [weather_text_list[item] for item in items]
+        return [weather_text_list[int(item)] for item in items]
     except:
-        return [2]
+        return [weather_text_list[1]]
 
 
 #Convert to Tweet Text
@@ -386,13 +385,13 @@ def convert_tweet_text():
             parktrail_text += f"\nUV Exposure: {(parktrail_weather['UV Exposure']).title()}"
         parktrail_text_list.append(parktrail_text)
         
-        if re.search('weather\((\d[,\s])+\)', user_tweet_text.lower()):
-            pattern = re.compile('weather\(((\d[,\s])+)\)')
+        if re.search('weather\((\d[,\s]?)*\)', user_tweet_text.lower()):
+            pattern = re.compile('weather\((\d[,\s]?)*\)')
             matches = pattern.finditer(user_tweet_text.lower())
             weather_search_list = []
             for match in matches:
                 weather_search_list.extend(re.split(r',\s*|\s+', (match.group(1)).lower()))
-            parktrail_text_list.extend(print_weather(parktrail_weather, weather_search_list))
+            parktrail_text_list.extend(print_weather(title, parktrail_weather, weather_search_list))
         
     return parktrail_text_list
 
@@ -463,45 +462,46 @@ def reply_to_tweets():
     global park_or_trail
     global user_location
     global user_tweet_text
-    print(time.strftime("%c") + ': retrieving and replying to tweets...', flush=True)
+    print(time.strftime("%c") + ': retrieving and replying to tweets...')
     last_seen_id = retrieve_last_seen_id(FILE_NAME)
     mentions = api.mentions_timeline(
                         last_seen_id,
                         tweet_mode='extended')
     for mention in reversed(mentions):
-        print(str(mention.id) + ' - ' + mention.full_text, flush=True)
+        print('\n ' + str(mention.id) + ' - ' + mention.full_text)
         last_seen_id = mention.id
         store_last_seen_id(last_seen_id, FILE_NAME)
         if '#helloworld' in mention.full_text.lower():
-            print('found #helloworld', flush=True)
-            print('responding back...', flush=True)
-            api.update_status('@' + mention.user.screen_name +
-                    ' HelloWorld', mention.id)
+            print('found #helloworld')
+            print('responding back...')
+            api.update_status('@' + mention.user.screen_name + ' HelloWorld', mention.id)
         elif 'park' in mention.full_text.lower() or 'trail' in mention.full_text.lower():
             user_tweet_text = (mention.full_text.replace('\n',' ')).replace('\r',' ')
             
             park_or_trail = 'trail' if 'trail' in mention.full_text.lower() else 'park'
-            print(f'found #{park_or_trail}', flush=True)
+            print(f'found #{park_or_trail}')
             
             print(user_tweet_text.lower())
+            
             user_location = (search_location(user_tweet_text))[0]
-            if not user_location:
-                user_location = [0,0]
             
             if park_or_trail == 'park':
-                search_results, sifted_search_results = check_fun_csv(search_fun(user_tweet_text.lower()), f'{park_or_trail}_info')
+                search_results, sifted_search_results = check_fun_csv(search_fun(user_tweet_text.lower()), 'park_info')
             else:
-                search_results = sifted_search_results = check_fun_csv(search_fun(user_tweet_text.lower()), f'{park_or_trail}_info')
+                search_results = sifted_search_results = check_fun_csv(search_fun(user_tweet_text.lower()), 'trail_info')
             
-            print('responding back...', flush=True)
-            for i, tweet_text in enumerate(convert_tweet_text()):
-                if i < 20:
-                    api.update_status('@' + mention.user.screen_name + tweet_text, mention.id)
-            print('completed', flush=True)
+            print('responding back...')
+            if user_location == [0,0]:
+                api.update_status('@' + mention.user.screen_name + ' Error - Location?', mention.id)
+            
+            tweet_replies_list = convert_tweet_text()
+            for i, tweet_text in enumerate(tweet_replies_list[:10]):
+                api.update_status('@' + mention.user.screen_name + tweet_text, mention.id)
+            print('completed\n')
         
         elif 'help' in mention.full_text.lower():
-            print('found #help', flush=True)
-            print('responding #help...', flush=True)
+            print('found #help')
+            print('responding #help...')
             api.update_status('@' + mention.user.screen_name +
                     '\nname(abc park)\nnearby(5) -add location-\n\nParks:\nactivity: act(bike)\narea: size(5, 1-2.5, >7) -mi2, acres-\n link(info, maps, permits, conditions)\n\nTrails:\nlen(*same as size*) -km, mi-\ntwitter.com/NextGenForestB1/status/1286073084362010624?s=20', mention.id)
         elif 'lnt' in mention.full_text.lower() or 'trace' in mention.full_text.lower():
@@ -528,8 +528,9 @@ def sleep_load(sec):
 
 while True:
     reply_to_tweets()
-    sleep_load(15)
-#    testing(1)
+#    sleep_load(15)
+    testing(1)
     
+
 
 
