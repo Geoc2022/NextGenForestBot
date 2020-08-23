@@ -14,6 +14,7 @@ Park functions: name(),  act(), area(), link(), nearby()
 Trails functions: name(),  len(), nearby()
 
 # Example:
+@NextGenForestB1
 Atlanta, GA nearby(5) #park
 
 ## nearby() aka nearbys()
