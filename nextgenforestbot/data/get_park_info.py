@@ -23,6 +23,47 @@ with open('park_info.csv', 'r') as csv_file:
         lat_list.append(line[4])
         long_list.append(line[5])
 
+title_list = title_list[:63] #I know it's very poor programing but it's quick to write
+link_list = link_list[:63]
+date_list = date_list[:63]
+area_list = area_list[:63]
+lat_list = lat_list[:63]
+long_list = long_list[:63]
+
+r = requests.get('https://en.wikipedia.org/wiki/List_of_the_United_States_National_Park_System_official_units')
+r_list = (r.text.split('</tr>'))
+
+nps_link_dic = {}
+
+for match_text in r_list:
+    match = re.search('<td><a href="(.*)" title="(.*)"(.*)\n<\/td>\n', match_text)
+    if match:
+        wiki_link = f'https://en.wikipedia.org/{match[1]}'
+        w = requests.get(wiki_link)
+        wiki_link_match = re.search('"(http(s?):\/\/www.nps.gov\/\w{4})\/?(index.htm)?"', w.text[:160000])
+        wiki_area_match = re.search('((\d{1,3},?)+) acres', w.text[:160000])
+        wiki_corrd_match = re.search('<span class="geo">(-?\d{2,3}\.\d*).? *(-?\d{2,3}\.\d*)', w.text[:160000])
+
+        if wiki_link_match and wiki_area_match and wiki_corrd_match:
+            area_value = float((wiki_area_match[1]).replace(',', ''))
+            edited_wiki_area_match = f'{area_value} acres ({round(area_value/247, 1)} km2)'
+
+            lat = float(wiki_corrd_match[1])
+            long = float(wiki_corrd_match[2])
+
+            nps_link_dic.update({match[2]: [wiki_link_match[1], edited_wiki_area_match, lat, long]})
+            
+            title_list.append(match[2])
+            if not wiki_link_match[1][:-10] == '/index.htm':
+                link_list.append(wiki_link_match[1] + '/index.htm')
+            else:
+                link_list.append(wiki_link_match[1])
+            date_list.append('1/1/00')
+            area_list.append(edited_wiki_area_match)
+            lat_list.append(lat)
+            long_list.append(long)
+#            print(f'[{len(nps_link_dic)}] {match[2]}: {[wiki_link_match[1], edited_wiki_area_match, lat, long]}')
+
 things2do_link_list = []
 pub_link_list = []
 for i in range(1, len(link_list)):
