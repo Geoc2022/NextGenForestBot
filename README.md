@@ -20,15 +20,11 @@ Atlanta, GA nearby(5) #park
 ## nearby() aka nearbys()
 ### finds nearby parks/trails with a given location
 
-for parks:
-
-nearbyparks(5)
-
-nearbypark(5)
-
-nearby(-5) #parks
-
-nearbys(5) #parks
+	for parks:
+	nearbyparks(5)
+	nearbypark(5)
+	nearby(-5) #parks
+	nearbys(5) #parks
 
 for trails:
 nearbytrails(5)
