@@ -55,12 +55,8 @@ for trails:
 ## name() aka title()
 ### finds parks/trails with the same name
 
-name(abc): 
-	
-	abc, abcd, or aabc
-name(^a): 
-	
-	all trails/parks which start with ‘a’ (uses regex: http://regexr.com)
+	name(abc): abc, abcd, or aabc
+	name(^a): all trails/parks which start with ‘a’ (uses regex: http://regexr.com)
 
 ## act() aka activity()
 ### finds parks which have the activities listed
