@@ -32,7 +32,7 @@ nearbytrail(-5)
 nearby(5) #trails
 nearbys(5) #trails
 
-(- numbers give the reverse)
+(negative numbers give the reverse)
 
 ## weather()
 ### Adds detailed weather
