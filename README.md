@@ -21,9 +21,13 @@ Atlanta, GA nearby(5) #park
 ### finds nearby parks/trails with a given location
 
 for parks:
+
 nearbyparks(5)
+
 nearbypark(5)
+
 nearby(-5) #parks
+
 nearbys(5) #parks
 
 for trails:
