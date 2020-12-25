@@ -38,7 +38,7 @@ nearbys(5) #trails
 ### Adds detailed weather
 
 #### weather(0)
-	{placetitle} - {Status} {Emoji}  ({Details})
+	{placetitle} - {Status} {Weather Emoji}  ({Details})
 	Temperature: {Temperature temp}
 	    max: {Temperature temp_max}
 	    min: {Temperature temp_min}
@@ -48,7 +48,7 @@ nearbys(5) #trails
 
 
 #### weather(1)
-	{placetitle} - {Status} {Emoji}  ({Details})
+	{placetitle} - {Status} {Weather Emoji}  ({Details})
 
 ## name() aka title()
 ### finds parks/trails with the same name
