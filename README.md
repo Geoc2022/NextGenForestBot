@@ -16,6 +16,7 @@ Trails functions: name(), len(), nearby(), weather()
 # Example:
 @NextGenForestB1
 Atlanta, GA nearby(5) #park
+https://twitter.com/GeoTest04178521/status/1345775356070998016?s=20
 
 ## nearby() aka nearbys()
 ### finds nearby parks/trails with a given location
